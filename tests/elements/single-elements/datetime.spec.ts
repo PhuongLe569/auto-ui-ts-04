@@ -132,3 +132,4 @@ async function selectMultipleDate(page: Page, day: number, month: string, year: 
     await selectDate(page, day, month, year);
 
 };
+
