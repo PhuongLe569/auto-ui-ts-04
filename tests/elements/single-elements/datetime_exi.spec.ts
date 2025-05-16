@@ -32,7 +32,7 @@ async function selectRangeTime(page: Page, label: string, starthour: number, sta
     let minuteXpath2 = `//ul[@data-type='minute']//li[contains(concat(' ',normalize-space(@class),' '),' ant-picker-time-panel-cell ') and @data-value = '${endminute}']`;
     await page.locator(minuteXpath2).click();
     let secondXpath2 = `//ul[@data-type='second']//li[contains(concat(' ',normalize-space(@class),' '),' ant-picker-time-panel-cell ') and @data-value = '${endsecond}']`;
-    await page.locator(secondXpath)2.click();
+    await page.locator(secondXpath2).click();
     //let pickerOkButtonCss = '.ant-picker-ranges .ant-picker-ok button';
     await page.locator(pickerOkButtonCss).click();
     
