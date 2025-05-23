@@ -31,10 +31,6 @@ async function selectTreeSelectByLabel(page: Page, label: string, input: string)
         } else {
             let iconXpath = `(//span[.//text()[normalize-space()='${value}'] and contains(concat(' ',normalize-space(@class),' '),' ant-select-tree-node-content-wrapper ')]/preceding-sibling::span[contains(concat(' ',normalize-space(@class),' '),' ant-select-tree-switcher ')])[1]`;
             await page.locator(iconXpath).click();
-
-
         }
     }
-
-
 }
