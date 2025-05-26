@@ -9,6 +9,10 @@
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.52.0",
+    "@types/lodash": "^4.17.17",
     "@types/node": "^22.15.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }
