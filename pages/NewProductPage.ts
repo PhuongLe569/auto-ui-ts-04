@@ -20,7 +20,6 @@ export class NewProductPage extends CommonPage{
         await this.page.getByPlaceholder("Search categories").clear();
         await this.page.getByPlaceholder("Search categories").fill(category);
         await this.page.locator(`(//span[.//text()[normalize-space()='${category}']]/following::button[.//text()[normalize-space()='Select']])[1]`).click();
-
     }
 
     async uploadImages(filePaths: string[]) {
@@ -28,8 +27,5 @@ export class NewProductPage extends CommonPage{
         // read file
         let xpathInput = `(//h2[.//text()[normalize-space()='Media']]/following::input)[1]`;
         await this.page.locator(xpathInput).setInputFiles(filePaths);
-
-
-
     }
 }
