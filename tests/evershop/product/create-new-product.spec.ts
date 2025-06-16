@@ -3,22 +3,48 @@ import { LoginPage } from "../../../pages/LoginPage";
 import { NewProductPage } from "../../../pages/NewProductPage";
 import { ProductsPage } from "../../../pages/ProductsPage";
 import { EditProductPage } from "../../../pages/EditProductPage";
+import { DELETE_PRODUCT_API, LOGIN_URL, URL } from "../../../utills/constants";
 
 let loginPage : LoginPage;
 let newProductPage: NewProductPage
 let productsPage: ProductsPage
 let editProductPage: EditProductPage;
+let listProductIds: string[] = [];
+let cookie: string;
 
 test.beforeEach('Before each', async ({ page }) => {
     loginPage = new LoginPage(page);
     newProductPage = new NewProductPage(page);
     productsPage = new ProductsPage(page);
     editProductPage = new EditProductPage(page);
-    await page.goto('http://localhost:3000/admin/login');
+    await page.goto(LOGIN_URL);
     await loginPage.loginWithAdmin();
     await expect(page.getByText('Dashboard').first()).toBeVisible();
+
+    page.route('*/**/api/products', async (route, request) => {
+        let allHeaders = await request.allHeaders();
+        cookie = allHeaders.cookie;
+        const response = await route.fetch();
+        const json = await response.json();
+        console.log(json);
+        listProductIds.push(json.data.uuid);
+        await route.fulfill({ response, json });
+    });
 });
 
+
+test.afterAll('Clean up data', async ({ request }) => {
+    //delete product by id
+    for (let id of listProductIds) {
+        await request.delete(`${URL}${DELETE_PRODUCT_API}${id}`, {
+            headers: {
+                'cookie': cookie
+            }
+        });
+    }
+    
+
+});
 
 test(`Verify create product`, async ({ page }) => {
 
@@ -59,7 +85,19 @@ test(`Verify create product`, async ({ page }) => {
     expect(await editProductPage.getTextBoxValueByLabel('SKU')).toEqual(randomSku);
     expect(await editProductPage.getTextBoxValueByLabel('Price')).toEqual('100');
     expect(await editProductPage.getTextBoxValueByLabel('Weight')).toEqual('200');
-    await page.waitForTimeout(1000);
+    expect(await editProductPage.getRadioByLabel('Status', 'Disabled')).toBe(true);
+    expect(await editProductPage.getRadioByLabel('Visibility', 'Not visible')).toBe(true);
+    expect(await editProductPage.getRadioByLabel('Manage stock?', 'No')).toBe(true);
+    expect(await editProductPage.getRadioByLabel('Stock availability', 'No')).toBe(true);
+    expect(await editProductPage.getTextBoxValueByLabel('Quantity')).toEqual('10');
+    expect(await editProductPage.getDropdownValueByLabel('Attribute group')).toEqual('Default');
+    expect(await editProductPage.getDropdownValueByLabel('Color')).toEqual('White');
+    expect(await editProductPage.getDropdownValueByLabel('Size')).toEqual('XL');
+    expect(await editProductPage.getTextBoxValueByLabel('Url key')).toEqual(randomUrlKey);
+    expect(await editProductPage.getTextBoxValueByLabel('Meta title')).toEqual('bitis');
+    expect(await editProductPage.getTextBoxValueByLabel('Meta keywords')).toEqual('bitis');
+    expect(await editProductPage.getTextAreaValueByLabel('Meta description')).toEqual("Giày Thể Thao Biti's Hunter X LiteDash Go For Love 2k25 Edition Nam Màu Nâu HSM007505NAU");
+
 
 });
 

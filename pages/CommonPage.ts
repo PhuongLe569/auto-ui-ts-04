@@ -47,5 +47,26 @@ export class CommonPage{
         let value = await this.page.locator(xpath).getAttribute("value");
         return value?.trim();
     }
+        async getTextAreaValueByLabel(label: string) {
+        let xpath = `(//label[.//text()[normalize-space()='${label}']]/following::textarea)[1]`;
+        let value = await this.page.locator(xpath).textContent();
+        return value?.trim();     
+    }
+
+    async getRadioByLabel(label: string, value: string) {
+        let xpath = `(//label[.//text()[normalize-space()='${label}']]/following::label[.//text()[normalize-space()='${value}']])[1]`;
+        let radioLocator = this.page.locator(xpath);
+        let inputLocator = radioLocator.locator('input');
+        let isChecked = await inputLocator.isChecked(); 
+        //let isChecked = await inputLocator.getAttribute('checked');
+        return isChecked;
+    }
+        async getDropdownValueByLabel(label: string) {
+        let xpath = `(//text()[normalize-space()='${label}']//following::select)[1]`;
+        let xpathLocator = await this.page.locator(xpath);
+        let value = xpathLocator.locator('option[selected]').textContent();
+        return value;
+    }
+
 
 }
