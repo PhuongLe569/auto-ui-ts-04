@@ -98,6 +98,5 @@ test(`Verify create product`, async ({ page }) => {
     expect(await editProductPage.getTextBoxValueByLabel('Meta keywords')).toEqual('bitis');
     expect(await editProductPage.getTextAreaValueByLabel('Meta description')).toEqual("Giày Thể Thao Biti's Hunter X LiteDash Go For Love 2k25 Edition Nam Màu Nâu HSM007505NAU");
 
-
 });
 
