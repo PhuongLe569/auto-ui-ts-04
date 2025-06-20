@@ -3,7 +3,7 @@ import { EditProductPage } from "../../../pages/EditProductPage";
 import { LoginPage } from "../../../pages/LoginPage";
 import { NewProductPage } from "../../../pages/NewProductPage";
 import { ProductsPage } from "../../../pages/ProductsPage";
-import { CREATE_PRODUCT_API, DELETE_PRODUCT_API, LOGIN_URL, URL } from "../../../utills/constants";
+import { CREATE_PRODUCT_API, DELETE_PRODUCT_API, LOGIN_URL, URL } from "../../../utils/constants";
 import createProductBody from "../product/data/create-product-body-template.json"
 import { create } from "lodash";
 

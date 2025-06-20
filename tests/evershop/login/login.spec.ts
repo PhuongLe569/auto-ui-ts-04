@@ -1,7 +1,9 @@
 import test, { expect, Page } from "@playwright/test";
 import { invalidLoginData } from "./login-data";
 import { LoginPage } from "../../../pages/LoginPage";
-import { LOGIN_URL } from "../../../utills/constants";
+import { LOGIN_URL } from "../../../utils/constants";
+import * as allure from "allure-js-commons";
+import { iStep } from "../../../utils/step-utils";
 
 let loginPage: LoginPage;
 
@@ -11,19 +13,19 @@ test.beforeEach('Before each', async ({ page }) => {
 });
 
 for(let data of invalidLoginData) {
-    test(`Verify login with invalid data - email: ${data.email} - password: ${data.passwords}`, async ({ page }) => {
-    await loginPage.login(data.email, data.passwords);
-    expect(await loginPage.getErrorMessageByLabel('Email')).toEqual(data.expectedEmailErrorMessage);
-    expect(await loginPage.getErrorMessageByLabel('Password')).toEqual(data.expectedPasswordErrorMessage);
-    });
+test(`Verify login with invalid data - email: ${data.email} - password: ${data.passwords}`, async ({ page }) => {
+        await iStep("Open login page", () => loginPage.login(data.email, data.passwords));
+        await iStep("Verify email error message", async () => expect(await loginPage.getErrorMessageByLabel('Email')).toEqual(data.expectedEmailErrorMessage));
+        await iStep("Verify password error message", async () => expect(await loginPage.getErrorMessageByLabel('Email')).toEqual(data.expectedEmailErrorMessage));
+    });    
 }
     test(`Verify login with wrong user and password`, async ({ page }) => {
-    await loginPage.login('abc@gmail.com', '123' );
-    await expect(page.getByText('Invalid email or password')).toBeVisible();
+        await loginPage.login('abc@gmail.com', '123' );
+        await expect(page.getByText('Invalid email or password')).toBeVisible();
     });
 
     test(`Verify login successful`, async ({ page }) => {
-    await loginPage.login('test@with.me', '12345678' );
-    await expect(page.getByText('Dashboard').first()).toBeVisible();
+        await loginPage.login('test@with.me', '12345678' );
+        await expect(page.getByText('Dashboard').first()).toBeVisible();
     });
 

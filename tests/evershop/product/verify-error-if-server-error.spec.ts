@@ -3,7 +3,7 @@ import { LoginPage } from "../../../pages/LoginPage";
 import { NewProductPage } from "../../../pages/NewProductPage";
 import { ProductsPage } from "../../../pages/ProductsPage";
 import { EditProductPage } from "../../../pages/EditProductPage";
-import { DELETE_PRODUCT_API, LOGIN_URL, URL } from "../../../utills/constants";
+import { DELETE_PRODUCT_API, LOGIN_URL, URL } from "../../../utils/constants";
 import { error } from "console";
 
 let loginPage : LoginPage;
