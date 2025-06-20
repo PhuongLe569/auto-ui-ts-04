@@ -1,14 +1,16 @@
 import test, { expect, Page } from "@playwright/test";
 import { invalidLoginData } from "./login-data";
 import { LoginPage } from "../../../pages/LoginPage";
-import { LOGIN_URL } from "../../../utils/constants";
+import { ADMIN_PASSWORD, ADMIN_USER_NAME, LOGIN_URL } from "../../../utils/constants";
 import * as allure from "allure-js-commons";
 import { iStep } from "../../../utils/step-utils";
+import { getEnv } from "../../../utils/config-utils";
+
 
 let loginPage: LoginPage;
 
 test.beforeEach('Before each', async ({ page }) => {
-    loginPage = new LoginPage(page);
+]loginPage = new LoginPage(page);
     await page.goto(LOGIN_URL);
 });
 
@@ -25,7 +27,7 @@ test(`Verify login with invalid data - email: ${data.email} - password: ${data.p
     });
 
     test(`Verify login successful`, async ({ page }) => {
-        await loginPage.login('test@with.me', '12345678' );
+        await loginPage.login(getEnv(ADMIN_USER_NAME), getEnv(ADMIN_PASSWORD));
         await expect(page.getByText('Dashboard').first()).toBeVisible();
     });
 
